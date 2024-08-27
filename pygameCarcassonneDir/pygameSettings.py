@@ -21,10 +21,10 @@ COFFEEBROWN =((200,190,140))
 BROWN = (92, 64, 51)
 
 # game grid
-GRID = [21,17] 
-GRID_SIZE = 40
-GRID_WINDOW_WIDTH = GRID[0]*GRID_SIZE
-GRID_WINDOW_HEIGHT = GRID[1]*GRID_SIZE
+GRID = [15,15] 
+GRID_SIZE = 60 # 40
+GRID_WINDOW_WIDTH = GRID[0] * GRID_SIZE
+GRID_WINDOW_HEIGHT = GRID[1] * GRID_SIZE
 GRID_BORDER = 80
 
 # meeple size
@@ -63,12 +63,12 @@ class displayScreen:
         self.Meeple_Size = Meeple_Size
         
         # grid size
-        self.Grid_Window_Width = Grid[0]*Grid_Size
-        self.Grid_Window_Height = Grid[1]*Grid_Size
+        self.Grid_Window_Width = Grid[0] * Grid_Size
+        self.Grid_Window_Height = Grid[1] * Grid_Size
         
         # add grid border
         self.Total_Grid_Width = self.Grid_Window_Width + self.Grid_border
-        self.Total_Grid_Height = self.Grid_Window_Height + self.Grid_border + 20
+        self.Total_Grid_Height = self.Grid_Window_Height + self.Grid_border
         
         # total height and width with border
         self.Window_Height = self.Total_Grid_Height
