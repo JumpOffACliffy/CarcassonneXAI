@@ -232,10 +232,16 @@ def playMove(NextTile, player, Carcassonne, TileIndex, isStartOfGame = False, Ma
     else:
         selectedMove = ManualMove
     
+    #print(f'(Before Move) Move Number: {Carcassonne.Turn}, Player: {player}, Meeple: {selectedMove[4]}')
+    #logging.info(f'Move Number: {Carcassonne.Turn}, Player: {player}, Meeple: {selectedMove[4]}, Winner: {Carcassonne.winner}')
+
     # play move on board
-    #print(f'(pygame) Selected Move: {selectedMove}')
-    #print(f'(pygame) Selected Move[0]: {selectedMove[0]}')
     Carcassonne.move(selectedMove)
+
+    # print(f'(pygame) Move Number: {Carcassonne.Turn}, Player: {player}, Meeple: {selectedMove[4]}')
+    # print(f'Tiles left: {Carcassonne.TotalTiles}')
+    # print(f'Winner: {Carcassonne.winner}')
+
     # switch player
     if player == Carcassonne.p1:
         return Carcassonne.p2, selectedMove

@@ -62,7 +62,8 @@ PLAYERS = [
 ]
 
 PLAYER1 = [HumanPlayer()]
-PLAYER2 = [RandomPlayer()]
+#PLAYER2 = [RandomPlayer()]
+PLAYER2 = [HumanPlayer()]
 
 AI_MOVE_EVENT = pygame.USEREVENT + 1
 AI_DELAY = 1000  # ms
@@ -280,9 +281,7 @@ def PlayGame(p1, p2):
         CLOCK.tick(60)
 
         if isGameOver:
-            print(
-                f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}"
-            )
+            #print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
             FinalMenu(Carcassonne)
 
 

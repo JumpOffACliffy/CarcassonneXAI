@@ -18,7 +18,7 @@ class MCTSPlayer(Player):
         isTimeLimited=False,
         c_param=1,
         logs=False,
-        logfile=None,
+        logfile="",
         name="MCTS_V",
         rollouts=1,
     ):
@@ -46,16 +46,18 @@ class MCTSPlayer(Player):
             self.cols = ["Name", "Simulations", "Turn", "TimeTaken"]
             self.file = self.CreateFile(self.cols, "Stats")
 
-            self.metric_cols = [
-                "Iteration",
-                "Backpropagation_depth",
-                "Reward",
-                "Discrepancy",
-                "UN_Visits",
-                "UN_Reward",
-                "",
-            ]
-            self.metric_file = self.CreateFile(self.cols, "Metrics")
+            self.moves_cols = ["Name", "MeeplePlacement", "TurnNumber", "GameWon"]
+            self.moves_file = self.CreateFile(self.moves_cols, "Moves")
+
+            # self.metric_cols = [
+            #     "Iteration",
+            #     "Backpropagation_depth",
+            #     "Reward",
+            #     "Discrepancy",
+            #     "UN_Visits",
+            #     "UN_Reward",
+            # ]
+            #self.metric_file = self.CreateFile(self.metric_cols, "Metrics")
 
     def test_seed(self):
         print(random.randint(0, 99999))
@@ -183,9 +185,7 @@ class MCTSPlayer(Player):
             self.Backpropogate(node, reward)
 
             endTime = time.time()
-        print(
-            f"({self.name})   Time Taken: {round(endTime - startTime, 2)} secs  -  Turn: {root_state.Turn}"
-        )
+        #print(f"({self.name})   Time Taken: {round(endTime - startTime, 2)} secs  -  Turn: {root_state.Turn}")
 
     def MCTS_IterationLimit(self, root_node, root_state):
         startTime = time.time()
@@ -208,11 +208,9 @@ class MCTSPlayer(Player):
             self.Backpropogate(node, reward)
 
         endTime = time.time()
-        print(
-            f"({self.name})   TimeTaken: {round(endTime - startTime,3)} secs  -  Turn: {root_state.Turn}"
-        )
+        #print(f"({self.name})   TimeTaken: {round(endTime - startTime,3)} secs  -  Turn: {root_state.Turn}")
         # append info to csv
-        if self.logs:  # ADD TREE STRUCTURE LOGS
+        if self.logs:  
             data = {
                 "Name": self.name,
                 "Simulations": self.iterations,
@@ -220,6 +218,14 @@ class MCTSPlayer(Player):
                 "TimeTaken": (endTime - startTime),
             }
             self.UpdateFile(data)
+
+            move_data = {
+                "Name": self.name,
+                "MeeplePlacement": "None", 
+                "TurnNumber": int((root_state.Turn + 1) / 2), 
+                "GameWon": False,
+            }
+            self.UpdateMovesFile(move_data)
 
 
 ##############################################################################
