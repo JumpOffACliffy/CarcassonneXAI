@@ -1,4 +1,12 @@
+import subprocess
+
+script = 'pygameCarcassonneDir/pygameCarcassonne.py'
+
+subprocess.run(["python", script])
 
 
-if __name__ == "__main__":
-    startMenu()
+# def main():
+    # script
+
+# if __name__ == '__main__':
+    # main()

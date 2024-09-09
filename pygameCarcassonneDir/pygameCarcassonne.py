@@ -53,6 +53,15 @@ NumKeys = [
     pygame.K_9,
 ]
 
+import logging
+
+logging.basicConfig(
+    filename='logs/game_moves.log',  # The file where logs will be stored
+    level=logging.INFO,         # The log level
+    format='%(message)s',  # Format for log messages
+    filemode='a'
+)
+
 # list of player available to choose from
 PLAYERS = [
     ("Human", HumanPlayer()),
@@ -281,9 +290,16 @@ def PlayGame(p1, p2):
         CLOCK.tick(60)
 
         if isGameOver:
-            #print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
+            print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
+            logging.info(f'Winner - Player: {Carcassonne.winner}')
+            logging.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
             FinalMenu(Carcassonne)
 
 
 if __name__ == "__main__":
-    startMenu()
+    #startMenu()
+    p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+    p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+    # p1 = RandomPlayer()
+    # p2 = RandomPlayer()
+    PlayGame(p1, p2)

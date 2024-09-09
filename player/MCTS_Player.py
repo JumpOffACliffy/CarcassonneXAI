@@ -106,7 +106,7 @@ class MCTSPlayer(Player):
         if playerSymbol == 1:
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[-1].Move
         else:
-            print(sorted(root_node.child, key=lambda c: c.Q)[0])
+            #print(sorted(root_node.child, key=lambda c: c.Q)[0])
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[0].Move
 
         self.latest_root_node = root_node
@@ -260,7 +260,7 @@ class Node:
         visits = 1 if self.visits == 0 else self.visits
         move = self.Move
         if self.Move:
-            print("\nMCTS best:")
+            #print("\nMCTS best:")
             tile_type = str(TILE_DESC_DICT[move.move[0]])
         else:
             tile_type = str(None)

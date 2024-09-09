@@ -8,16 +8,6 @@ from Carcassonne_Game.Carcassonne_CityUtils import cityConnections, cityClosures
 from Carcassonne_Game.Carcassonne_RoadUtils import roadConnections, roadClosures
 from Carcassonne_Game.Carcassonne_FarmUtils import farmConnections
 
-import logging
-
-# Initialize logging
-logging.basicConfig(
-    filename='logs/game_moves.log',  # The file where logs will be stored
-    level=logging.INFO,         # The log level
-    format='%(message)s',  # Format for log messages
-    filemode='w'
-)
-
 """
 
 In this script you will find the class for the game states of Carcassonne.
@@ -448,9 +438,6 @@ class CarcassonneState:
                 - Rotation: Rotation of tile
                 - MeepleKey
         """
-        #log move
-        print(f'Move Function - Move Number: {self.Turn}, Player: {self.playerSymbol}, Meeple: {Move[4]}')
-        logging.info(f'MoveNumber: {self.Turn}, Player: {self.playerSymbol}, Meeple: {Move[4]}')
 
         # split up 'Move' object
         PlayingTileIndex = Move[0]
@@ -544,9 +531,6 @@ class CarcassonneState:
         else:
             self.winner = 0 #Draw       
             
-        #add log statement here?
-        logging.info(f'Winner - Player: {self.winner}')
-
         self.result = self.Scores[2] - self.Scores[3]
         
     
