@@ -67,7 +67,7 @@ FEATURE_DICT = {"C": "City", "R": "Road", "G": "Farm", "Monastery": "Monastery"}
 
 class nextTile:
 
-    def __init__(self, Carcassonne, displayScreen, RunInit=True, *args):
+    def __init__(self, Carcassonne, displayScreen, RunInit=False, *args):
         self.Carcassonne = Carcassonne
 
 
