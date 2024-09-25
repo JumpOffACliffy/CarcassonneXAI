@@ -7,14 +7,14 @@ from pygameCarcassonneDir.pygameLabel import Label
 import pygame
 import math
 
-import logging
+# import logging
 
-logging.basicConfig(
-    filename='logs/game_moves.log',  # The file where logs will be stored
-    level=logging.INFO,         # The log level
-    format='%(message)s',  # Format for log messages
-    filemode='w'
-)
+# logging.basicConfig(
+#     filename='logs/game_moves.log',  # The file where logs will be stored
+#     level=logging.INFO,         # The log level
+#     format='%(message)s',  # Format for log messages
+#     filemode='w'
+# )
 
 X_DEPTH = 10
 Y_DEPTH = 20
@@ -242,8 +242,8 @@ def playMove(NextTile, player, Carcassonne, TileIndex, isStartOfGame = False, Ma
         selectedMove = ManualMove
     
     # log move
-    print(f'Move Number: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
-    logging.info(f'MoveNumber: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    #print(f'Move Number: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    #logging.info(f'MoveNumber: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
 
     # play move on board
     Carcassonne.move(selectedMove)

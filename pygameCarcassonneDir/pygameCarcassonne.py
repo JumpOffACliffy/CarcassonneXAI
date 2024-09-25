@@ -26,13 +26,21 @@ from pygameCarcassonneDir.pygameFunctions import (
 )
 
 import logging
+from datetime import datetime
 
-logging.basicConfig(
-    filename='logs/game_moves.log',  # The file where logs will be stored
-    level=logging.INFO,         # The log level
-    format='%(message)s',  # Format for log messages
-    filemode='a'
-)
+def setup_logging():
+    
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
+    """Setup the logging configuration with a unique file for each game run."""
+    log_filename = f'logs/game_moves_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
+    logging.basicConfig(
+        filename=log_filename,   # Each log file gets a unique name
+        level=logging.INFO,
+        format='%(message)s',
+        filemode='w'
+    )
 
 # list of player available to choose from
 PLAYERS = [
@@ -76,6 +84,8 @@ def PlayGame(p1, p2):
                 sys.exit()
             if not isGameOver:
                 if player.isAIPlayer and event.type == AI_MOVE_EVENT:
+                    print(f'Move Number: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+                    logging.info(f'MoveNumber: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
                     player, selectedMove = playMove(
                         NT,
                         player,
@@ -98,15 +108,6 @@ def PlayGame(p1, p2):
                     # Handle human player input (can simulate this if needed)
                     pass
 
-        if hasSomethingNew:
-            # Log move details
-            logging.info(f'Player {player.name} selected move: {selectedMove}')
-            hasSomethingNew = False
-
-        # Log game status (scores, tiles left)
-        #printScores(Carcassonne, None)
-        printTilesLeft(Carcassonne, None)
-
         if isGameOver:
             logging.info(f'Winner: Player {Carcassonne.winner}')
             logging.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
@@ -117,6 +118,12 @@ def PlayGame(p1, p2):
 
 
 if __name__ == "__main__":
-    p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
-    p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
-    PlayGame(p1, p2)
+    for i in range(100):  # Run the game 100 times
+        print(f"Starting game {i+1}")
+        setup_logging()  # Set up logging for each game with a unique file
+        p1 = MCTSPlayer(isTimeLimited=False, timeLimit=10)
+        p2 = MCTSPlayer(isTimeLimited=False, timeLimit=5)
+        #p1 = RandomPlayer()
+        #p2 = RandomPlayer()
+        PlayGame(p1, p2)
+        print(f"Finished game {i+1}")
