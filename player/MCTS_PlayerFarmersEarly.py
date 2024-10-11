@@ -91,25 +91,13 @@ class MCTSPlayer(Player):
 
         # return the node with the highest number of wins from the view of the current player
         if playerSymbol == 1:
-            move_list = sorted(root_node.child, key=lambda c: c.Q)
-            #do something with the move list
-            #pass it to
-            for i in range(len(move_list)):
-                # print(move_list[i].Move)
-                # print(move_list[i])
-                #print(f"Move: {move_list[i].Move}, Q: {move_list[i].Q}")
-                pass
-            
-            # print(sorted(root_node.child, key=lambda c: c.Q)[-1].Move)
+            print(sorted(root_node.child, key=lambda c: c.Q))
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[-1].Move
-            #print(f"(MCTS) Player: {playerSymbol} best move: {bestMove}")
         else:
             #print(sorted(root_node.child, key=lambda c: c.Q))
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[0].Move
-            #print(f"(MCTS) Player: {playerSymbol} best move: {bestMove}")
 
         self.latest_root_node = root_node
-        #print(f"(MCTS) Turn: {root_state.Turn}, Player: {playerSymbol} Best move: {bestMove}")
         return bestMove.move
 
     # 4 steps of MCTS

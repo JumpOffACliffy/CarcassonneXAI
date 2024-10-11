@@ -59,7 +59,7 @@ SIDE_COMPARISON_DICT={
 
 
             
-class CarcassonneState:
+class  CarcassonneState:
     """
     List of important attributes:
         self.p1 - player 1 (class 'Player')
@@ -499,7 +499,8 @@ class CarcassonneState:
         self.UpdateVirtualScores()
         # check if game is over
         if self.TotalTiles == 0:
-            #print(f'Move Function - Move Number: {72 - self.TotalTiles}, Player: {self.playerSymbol}, Meeple: {Move[4]}')
+            self.playerSymbol = 3 - self.playerSymbol
+            self.Turn += 1
             self.EndGameRoutine()
             return
         

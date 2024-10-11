@@ -104,16 +104,6 @@ class Player:
             new_df = pd.concat([df,pd.DataFrame(data)])  # new data
             #df.to_csv(self.file, index=False)  # export
             new_df.to_csv(self.file, index=False)  # export
-        
-    def UpdateMovesFile(self, data):
-        """
-        Update csv file with move data
-        """
-        if self.logs:
-            df = pd.read_csv(self.moves_file)
-            data = {k:[v] for k,v in data.items()}
-            new_df = pd.concat([df,pd.DataFrame(data)])
-            new_df.to_csv(self.moves_file, index=False)
 
     def UpdateESFile(self, data):
         """
@@ -126,7 +116,6 @@ class Player:
             new_df = pd.concat([df,pd.DataFrame(data)])  # new data
             #df.to_csv(self.ES_file, index=False)  # export
             new_df.to_csv(self.ES_file, index=False)  # export
-    
     
     def UpdateEVOFile(self, data):
         """

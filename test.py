@@ -1,6 +1,6 @@
 import subprocess
 
-script = 'pygameCarcassonneDir/pygameCarcassonne.py'
+script = 'pygameCarcassonneDir/pygameCarcassonneNoGUI.py'
 
 subprocess.run(["python", script])
 

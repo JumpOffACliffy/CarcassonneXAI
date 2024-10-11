@@ -7,14 +7,24 @@ from pygameCarcassonneDir.pygameLabel import Label
 import pygame
 import math
 
-# import logging
+import logging
+from datetime import datetime
 
-# logging.basicConfig(
-#     filename='logs/game_moves.log',  # The file where logs will be stored
-#     level=logging.INFO,         # The log level
-#     format='%(message)s',  # Format for log messages
-#     filemode='w'
-# )
+def setup_logging():
+    
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
+    """Setup the logging configuration with a unique file for each game run."""
+    log_filename = f'logs/game_moves_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
+    logging.basicConfig(
+        filename=log_filename,   # Each log file gets a unique name
+        level=logging.INFO,
+        format='%(message)s',
+        filemode='w'
+    )
+    return logging.getLogger()
+
 
 X_DEPTH = 10
 Y_DEPTH = 20
@@ -242,8 +252,8 @@ def playMove(NextTile, player, Carcassonne, TileIndex, isStartOfGame = False, Ma
         selectedMove = ManualMove
     
     # log move
-    #print(f'Move Number: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
-    #logging.info(f'MoveNumber: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    print(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
+    logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
 
     # play move on board
     Carcassonne.move(selectedMove)
