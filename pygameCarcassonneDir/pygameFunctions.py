@@ -25,6 +25,8 @@ def setup_logging():
     )
     return logging.getLogger()
 
+def get_logger():
+    return logging.getLogger()
 
 X_DEPTH = 10
 Y_DEPTH = 20
@@ -253,7 +255,8 @@ def playMove(NextTile, player, Carcassonne, TileIndex, isStartOfGame = False, Ma
     
     # log move
     print(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
-    logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    #logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
 
     # play move on board
     Carcassonne.move(selectedMove)

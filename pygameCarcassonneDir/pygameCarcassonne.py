@@ -11,10 +11,6 @@ print(os.getcwd())
 # import local scripts
 from player.Player import HumanPlayer, RandomPlayer
 from player.MCTS_Player import MCTSPlayer
-from player.MCTS_RAVE_Player import MCTS_RAVEPlayer
-from player.MCTS_ES_Player import MCTS_ES_Player
-from player.Star1_Player import Star1
-from player.Star2_5_Player import Star2_5
 
 from Carcassonne_Game.Carcassonne import CarcassonneState
 from Carcassonne_Game.Tile import Tile
@@ -28,6 +24,8 @@ from pygameCarcassonneDir.pygameFunctions import (
     printTilesLeft,
     setup_logging,
 )
+
+from pygameCarcassonneDir.pygameCopilot import Copilot
 
 from pygameCarcassonneDir.pygameSettings import (
     BLACK,
@@ -59,7 +57,6 @@ PLAYERS = [
     ("Human", HumanPlayer()),
     ("Random", RandomPlayer()),
     ("MCTS", MCTSPlayer(isTimeLimited=False, timeLimit=5)),
-    ("RAVE", MCTS_RAVEPlayer(isTimeLimited=True, timeLimit=5)),
 ]
 
 PLAYER1 = [HumanPlayer()]
@@ -161,6 +158,10 @@ def PlayGame(p1, p2):
     if player.isAIPlayer:
         pygame.time.set_timer(AI_MOVE_EVENT, AI_DELAY)
 
+    copilot = Copilot()
+
+    testFlag = True
+
     while not done:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -182,6 +183,8 @@ def PlayGame(p1, p2):
                         isStartOfTurn = True
                         hasSomethingNew = True
                         isStartOfGame = False
+                        #new flag here?
+                        testFlag = True
                         isGameOver = Carcassonne.isGameOver
                         if isGameOver:
                             pygame.time.set_timer(AI_MOVE_EVENT, 0)
@@ -202,6 +205,8 @@ def PlayGame(p1, p2):
                             if numberSelected == 0:
                                 NT.Meeple = None
                             hasSomethingNew = True
+                            #copilot monastery meeple saving function
+                            copilot.saveMeepleForMonastery(Carcassonne, NT.nextTileIndex)
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         X, Y = NT.evaluate_click(pygame.mouse.get_pos(), DisplayScreen)
 
@@ -225,9 +230,9 @@ def PlayGame(p1, p2):
                             isStartOfGame = False
                             pygame.time.set_timer(AI_MOVE_EVENT, 1)
                         elif (X, Y) in list(NT.Carcassonne.Board.keys()):
-                            print("check")
+                            #print("check")
                             text = NT.displayTextClickedTile(X, Y)
-                            print(text)
+                            #print(text)
                         else:
                             print(f"Position invalid: X: {X}, Y:{Y}")
                     isGameOver = Carcassonne.isGameOver
@@ -243,7 +248,6 @@ def PlayGame(p1, p2):
                 i = 1
                 for location_key in NT.Tile.AvailableMeepleLocs:
                     location_value = NT.Tile.AvailableMeepleLocs[location_key]
-
                     NT.addMeepleLocations(
                         location_key,
                         location_value,
@@ -276,22 +280,28 @@ def PlayGame(p1, p2):
         diplayGameBoard(Carcassonne, DisplayScreen)
         pygame.display.flip()
 
+        if testFlag == True:
+            copilot.placeMonasteryMeeple(Carcassonne)
+            testFlag = False
+
         isStartOfTurn = False
         hasSomethingNew = False
 
         CLOCK.tick(60)
 
         if isGameOver:
+            if 'logger' in globals():
+                logger.info(f'Winner - Player: {Carcassonne.winner}')
+                logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
             print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
-            logger.info(f'Winner - Player: {Carcassonne.winner}')
-            logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
             FinalMenu(Carcassonne)
 
 
 if __name__ == "__main__":
     #startMenu()
-    logger = setup_logging()
-    p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+    #logger = setup_logging()
+    # p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+    p1 = HumanPlayer()
     p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
     # p1 = RandomPlayer()
     # p2 = RandomPlayer()

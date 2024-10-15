@@ -10,10 +10,6 @@ print(os.getcwd())
 # import local scripts
 from player.Player import HumanPlayer, RandomPlayer
 from player.MCTS_Player import MCTSPlayer
-from player.MCTS_RAVE_Player import MCTS_RAVEPlayer
-from player.MCTS_ES_Player import MCTS_ES_Player
-from player.Star1_Player import Star1
-from player.Star2_5_Player import Star2_5
 
 from Carcassonne_Game.Carcassonne import CarcassonneState
 from Carcassonne_Game.Tile import Tile
@@ -30,7 +26,6 @@ PLAYERS = [
     ("Human", HumanPlayer()),
     ("Random", RandomPlayer()),
     ("MCTS", MCTSPlayer(isTimeLimited=False, timeLimit=5)),
-    ("RAVE", MCTS_RAVEPlayer(isTimeLimited=True, timeLimit=5)),
 ]
 
 PLAYER1 = [HumanPlayer()]
@@ -53,9 +48,6 @@ def PlayGame(p1, p2):
     isGameOver = False
     isStartOfGame = isStartOfTurn = hasSomethingNew = True
     selectedMove = [16, 0, 0, 0, None]
-    rotation = 0
-    newRotation = False
-    numberSelected = 0
 
     if player.isAIPlayer:
         pygame.time.set_timer(AI_MOVE_EVENT, AI_DELAY)
@@ -90,8 +82,9 @@ def PlayGame(p1, p2):
                     pass
 
         if isGameOver:
-            logger.info(f'Winner - Player: {Carcassonne.winner}')
-            logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
+            if 'logger' in globals():
+                logger.info(f'Winner - Player: {Carcassonne.winner}')
+                logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
             print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
             done = True
 
@@ -99,12 +92,12 @@ def PlayGame(p1, p2):
 
 
 if __name__ == "__main__":
-    for i in range(2):  # Run the game X times
+    for i in range(1):  # Run the game X times
         print(f"Starting game {i+1}")
         logger = setup_logging()
-        p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
-        p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
-        # p1 = RandomPlayer()
-        # p2 = RandomPlayer()
+        # p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+        # p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+        p1 = RandomPlayer()
+        p2 = RandomPlayer()
         PlayGame(p1, p2)
         print(f"Finished game {i+1}")
