@@ -158,8 +158,8 @@ def PlayGame(p1, p2):
         pygame.time.set_timer(AI_MOVE_EVENT, AI_DELAY)
 
     copilot = Copilot()
-
     copilotFlag = True
+    NT.updateMoveLabel(GAME_DISPLAY, 'thinking')
 
     while not done:
         for event in pygame.event.get():
@@ -184,6 +184,7 @@ def PlayGame(p1, p2):
                         #new flag here
                         copilotFlag = True
                         isGameOver = Carcassonne.isGameOver
+                        NT.updateMoveLabel(GAME_DISPLAY, 'thinking')
                         if isGameOver:
                             pygame.time.set_timer(AI_MOVE_EVENT, 0)
                         else:
@@ -205,7 +206,7 @@ def PlayGame(p1, p2):
                             hasSomethingNew = True
                             #copilot monastery meeple saving function
                             if copilotFlag and copilot.saveMeepleForMonastery(Carcassonne, NT.nextTileIndex):
-                                NT.updateMoveLabel(Carcassonne, 'save meeple')
+                                NT.updateMoveLabel(GAME_DISPLAY, 'save meeple')
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         X, Y = NT.evaluate_click(pygame.mouse.get_pos(), DisplayScreen)
 
@@ -275,11 +276,11 @@ def PlayGame(p1, p2):
 
         if isStartOfTurn:
             copilotRecommendation = copilot.placeMeeple(Carcassonne)
+            NT.updateMoveLabel(GAME_DISPLAY, copilotRecommendation)
             isStartOfTurn = False
-            if copilotRecommendation is not None:
-                NT.updateMoveLabel(Carcassonne, copilotRecommendation)
+            if copilotRecommendation != 'none':
                 copilotFlag = False
-
+        
         isStartOfTurn = False
         hasSomethingNew = False
 
@@ -299,6 +300,4 @@ if __name__ == "__main__":
     # p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
     p1 = HumanPlayer()
     p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
-    # p1 = RandomPlayer()
-    # p2 = RandomPlayer()
     PlayGame(p1, p2)

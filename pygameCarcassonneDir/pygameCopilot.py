@@ -14,7 +14,7 @@ class Copilot:
         """
         Copilot function to determine if the player should place a meeple, and if so on which feature. 
         """
-        recommendedMeeple = None
+        recommendedMeeple = 'none'
 
         availableMoves = Carcassonne.availableMoves() # returns unsorted list of all legal moves
         availableMeeples = Carcassonne.Meeples[0] # the number of meeples the player has remaining
@@ -35,7 +35,7 @@ class Copilot:
         bestMove = mctsMoves[0].Move
         bestMoveQ = mctsMoves[0].Q
         print(f"best Q: {bestMoveQ}")
-        print(f"best meeple: {bestMove.MeepleInfo}")
+        #print(f"best meeple: {bestMove.MeepleInfo}")
 
         if availableMeeples > 0 and bestMove.MeepleInfo is not None and bestMoveQ >= MINIMUM_Q:
             bestMeeple = bestMove.MeepleInfo[0]
@@ -46,7 +46,7 @@ class Copilot:
                 recommendedMeeple = 'city'
                 #print('You should place a meeple in a city.')
 
-        #print(f'Copilot Recommended Meeple: {recommendedMeeple}')
+        print(f'Copilot Recommended Meeple: {recommendedMeeple}')
         return recommendedMeeple
 
 

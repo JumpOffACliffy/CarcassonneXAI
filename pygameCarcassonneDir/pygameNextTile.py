@@ -109,6 +109,8 @@ class nextTile:
             self.moveLabel.set_alpha(180)
             pygame.draw.rect(self.moveLabel, BROWN, self.moveLabel.get_rect(), 10)
 
+            # self.moveLabel1 = Label('Copilot is thinking...', font_size=25, background=None, foreground=WHITE)
+
             # rotation images and labels
             self.leftRotImage = pygame.image.load("pygame_images/left_rotate.png")
             self.rightRotImage = pygame.image.load("pygame_images/right_rotate.png")
@@ -344,16 +346,23 @@ class nextTile:
         self.meepleLabel.blit(meepleInfoLabel.text_surface, (x, y))
 
 
-    def updateMoveLabel(self, Carcassonne, copilotRecommendation):
+    def updateMoveLabel(self, displayScreen, copilotRecommendation):
         title = "Copilot Suggestion:"
 
         promptLine1 = ''
         promptLine2 = ''
         promptLine3 = ''
-        #promptLine4 = ''
+
+        #clear thinking prompt 
+        # moveLabel1 = Label(promptLine1, font_size=25, background=None, foreground=WHITE)
+        # self.moveLabel.blit(moveLabel1.text_surface, (15, 35))
 
         # recommendation prompt
         match copilotRecommendation:
+            case 'thinking':
+                # moveLabel1 = Label(promptLine1, font_size=25, background=None, foreground=WHITE)
+                # self.moveLabel.blit(moveLabel1.text_surface, (15, 35))
+                promptLine1 = 'Thinking...'
             case 'monastery':
                 #prompt = 'It\'s generally a good strategy to always place a meeple on a Monastery!'
                 promptLine1 = 'It\'s generally a good strategy'
@@ -370,17 +379,18 @@ class nextTile:
                 promptLine2 = 'a farmer.'
             case 'city':
                 #prompt = 'You should place a meeple in a city.'
-                promptLine1 = 'You should place a meeple in a city.'
+                promptLine1 = 'You should place a meeple in a'
+                promptLine2 = 'city.'
+            case 'none':
+                promptLine1 = 'No suggestion.'
         
 
         moveLabel0 = Label(title, font_size=30, background=WHITE)
-        moveLabel1 = Label(promptLine1, font_size=25, background=None, foreground=WHITE)
-        moveLabel2 = Label(promptLine2, font_size=25, background=None, foreground=WHITE)
-        moveLabel3 = Label(promptLine3, font_size=25, background=None, foreground=WHITE)
-        #moveLabel4 = Label(promptLine4, font_size=25, background=None, foreground=WHITE)
+        moveLabel1 = Label(promptLine1, font_size=25, background=BROWN, foreground=WHITE)
+        moveLabel2 = Label(promptLine2, font_size=25, background=BROWN, foreground=WHITE)
+        moveLabel3 = Label(promptLine3, font_size=25, background=BROWN, foreground=WHITE)
 
         self.moveLabel.blit(moveLabel0.text_surface, (15, 10))
         self.moveLabel.blit(moveLabel1.text_surface, (15, 35))
         self.moveLabel.blit(moveLabel2.text_surface, (15, 55))
         self.moveLabel.blit(moveLabel3.text_surface, (15, 75))
-        #self.moveLabel.blit(moveLabel4.text_surface, (15, 95))

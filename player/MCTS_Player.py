@@ -103,8 +103,8 @@ class MCTSPlayer(Player):
         else:
             move_list = sorted(root_node.child, key=lambda c: c.Q) # returns Q values low to high
 
-        for move in move_list:
-            print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
+        #for move in move_list:
+            #print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
 
         self.latest_root_node = root_node
         return move_list

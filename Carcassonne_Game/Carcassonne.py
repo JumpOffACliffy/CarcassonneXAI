@@ -190,7 +190,6 @@ class  CarcassonneState:
             index = self.deck.index(15)
             self.deck[index] = self.deck[12]
             self.deck[12] = 15
-            """
             
             #player
             index = self.deck.index(20)
@@ -209,12 +208,6 @@ class  CarcassonneState:
             index = self.deck.index(15)
             self.deck[index] = self.deck[12]
             self.deck[12] = 15
-            #ai
-
-            """
-            index = self.deck.index(0)
-            self.deck[index] = self.deck[1]
-            self.deck[1] = 0
             """
             
             
