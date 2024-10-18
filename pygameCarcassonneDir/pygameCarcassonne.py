@@ -297,7 +297,6 @@ def PlayGame(p1, p2):
 if __name__ == "__main__":
     #startMenu()
     #logger = setup_logging()
-    # p1 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
     p1 = HumanPlayer()
-    p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+    p2 = MCTSPlayer(isTimeLimited=False, timeLimit=10)
     PlayGame(p1, p2)

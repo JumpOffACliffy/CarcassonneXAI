@@ -353,15 +353,9 @@ class nextTile:
         promptLine2 = ''
         promptLine3 = ''
 
-        #clear thinking prompt 
-        # moveLabel1 = Label(promptLine1, font_size=25, background=None, foreground=WHITE)
-        # self.moveLabel.blit(moveLabel1.text_surface, (15, 35))
-
         # recommendation prompt
         match copilotRecommendation:
             case 'thinking':
-                # moveLabel1 = Label(promptLine1, font_size=25, background=None, foreground=WHITE)
-                # self.moveLabel.blit(moveLabel1.text_surface, (15, 35))
                 promptLine1 = 'Thinking...'
             case 'monastery':
                 #prompt = 'It\'s generally a good strategy to always place a meeple on a Monastery!'
