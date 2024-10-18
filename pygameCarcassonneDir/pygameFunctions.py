@@ -292,7 +292,7 @@ def printTilesLeft(Carcassonne, displayScreen, *args):
     # attach to rectangle
     label.blit(tilesLeftLabel.text_surface, ((width - text_width)/2, (height - text_height)/2))
     # attach rectangle to screen
-    GAME_DISPLAY.blit(label, (Grid_Window_Width + (Menu_Width - width)/2, 0))
+    GAME_DISPLAY.blit(label, (Grid_Window_Width + (Menu_Width - width)/2, 250))
     
     
 

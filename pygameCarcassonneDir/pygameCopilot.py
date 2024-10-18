@@ -10,36 +10,44 @@ class Copilot:
         self.logger = get_logger()
 
 
-    def placeMonasteryMeeple(self, Carcassonne):
+    def placeMeeple(self, Carcassonne):
         """
-        Do I turn this into a mega function with all promptings? 
-        We shall see...
+        Copilot function to determine if the player should place a meeple, and if so on which feature. 
         """
-        player = Carcassonne.p2
+        recommendedMeeple = None
 
-        print(f"It is player {Carcassonne.playerSymbol}\'s turn")
-        # self.logger.info(f"It is player: {Carcassonne.playerSymbol}\'s turn")
-        available_moves = player.listActions(Carcassonne)
-        # player = Carcassonne.p1 # reset to correct player's turn
+        availableMoves = Carcassonne.availableMoves() # returns unsorted list of all legal moves
+        availableMeeples = Carcassonne.Meeples[0] # the number of meeples the player has remaining
 
-        # for move in available_moves:
-        #     self.logger.info(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
-        #     print(f"(copilot) Move: {move.Move}, Q: {round(move.Q, 3)}")
-
-        available_meeples = Carcassonne.Meeples[0]
-        #print(f"Available meeples: {available_meeples}")
-
-        bestMove = available_moves[0].Move
-        if bestMove.MeepleInfo is not None:
-            if available_meeples > 0 and bestMove.MeepleInfo[0] == 'Monastery':
-                # prompt user to place a meeple on the monastery
-                print('It\'s generally a good strategy to always place a meeple on a Monastery!')
-
-    def placeFarmerMeeple(self, Carcassonne):
-        player = Carcassonne.p2
-        available_moves = player.listActions(Carcassonne)
+        for move in availableMoves:
+            if availableMeeples > 0 and move.MeepleInfo is not None:
+                if move.MeepleInfo[0] == 'Monastery':
+                    recommendedMeeple = 'monastery'
+                    #print('It\'s generally a good strategy to always place a meeple on a Monastery!') #this is going to print multiple times
+                    return recommendedMeeple # short circuit here on monastery
+                    
         
-        available_meeples = Carcassonne.Meeples[0]
+        # if no monastery was found, now proceed with MCTS search for farms/cities
+        MINIMUM_Q = 10
+        player = Carcassonne.p2
+        mctsMoves = player.listActions(Carcassonne) # returns sorted list of moves based on MCTS Q score
+        #access Q scores with mctsMoves[i].Q
+        bestMove = mctsMoves[0].Move
+        bestMoveQ = mctsMoves[0].Q
+        print(f"best Q: {bestMoveQ}")
+        print(f"best meeple: {bestMove.MeepleInfo}")
+
+        if availableMeeples > 0 and bestMove.MeepleInfo is not None and bestMoveQ >= MINIMUM_Q:
+            bestMeeple = bestMove.MeepleInfo[0]
+            if bestMeeple == 'G':
+                recommendedMeeple = 'farmer'
+                #print('Now would be a good time to place a farmer.')
+            if bestMeeple == 'C':
+                recommendedMeeple = 'city'
+                #print('You should place a meeple in a city.')
+
+        #print(f'Copilot Recommended Meeple: {recommendedMeeple}')
+        return recommendedMeeple
 
 
     def saveMeepleForMonastery(self, Carcassonne, tileIndex):
@@ -56,4 +64,4 @@ class Copilot:
                 # prompt user to consider saving a meeple for a future monastery
                 print("It might be worth hanging onto a meeple in case you draw a Monastery")
                 self.hasBeenWarnedMonastery = True
-    
+                return self.hasBeenWarnedMonastery

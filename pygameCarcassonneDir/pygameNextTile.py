@@ -102,8 +102,9 @@ class nextTile:
             self.meepleLabel = pygame.Surface(pygame.Rect(meepleRect).size)
             self.meepleLabel.set_alpha(165)
             pygame.draw.rect(self.meepleLabel, BROWN, self.meepleLabel.get_rect(), 10)
+
             # last move label
-            moveRect = (0, 0, 300, 125)
+            moveRect = (0, 0, 300, 150)
             self.moveLabel = pygame.Surface(pygame.Rect(moveRect).size)
             self.moveLabel.set_alpha(180)
             pygame.draw.rect(self.moveLabel, BROWN, self.moveLabel.get_rect(), 10)
@@ -299,7 +300,7 @@ class nextTile:
         """
         Instruct user to press space to force AI to make move
         """
-        text = "Press SPACEBAR (AI move)"
+        text = "AI opponent is thinking..."
         spcaebarLabel = Label(text, font_size=FONT_MEEPLE_MENU, background=WHITE)
         self.meepleLabel.blit(spcaebarLabel.text_surface, (20, 70))
 
@@ -342,35 +343,44 @@ class nextTile:
         meepleInfoLabel = Label(text, font_size=FONT_MEEPLE_MENU, background=background)
         self.meepleLabel.blit(meepleInfoLabel.text_surface, (x, y))
 
-    def updateMoveLabel(self, Carcassonne, selectedMove, isStartOfGame):
-        # check if any moves have been played yet
-        move = selectedMove
-        player = 3 - Carcassonne.playerSymbol
 
-        # text
-        title = "Last Move:"
-        tile = " Tile: " + str(move[0]) + " - " + Tile(move[0]).tile_desc
-        location = f" X: {move[1]}, Y: {move[2]}, Rotation: {move[3]}"
-        meeple = (
-            " Meeple: None"
-            if move[4] is None
-            else f" Meeple: {FEATURE_DICT[move[4][0]]}"
-        )
-        player = f" Player {player}"
+    def updateMoveLabel(self, Carcassonne, copilotRecommendation):
+        title = "Copilot Suggestion:"
 
-        if isStartOfGame:
-            player = " Game Starting Tile"
+        promptLine1 = ''
+        promptLine2 = ''
+        promptLine3 = ''
+        #promptLine4 = ''
 
-        moveLabel1 = Label(title, font_size=25, background=WHITE)
-        moveLabel2 = Label(tile, font_size=20, background=None, foreground=WHITE)
-        moveLabel3 = Label(location, font_size=20, background=None, foreground=WHITE)
-        moveLabel4 = Label(meeple, font_size=20, background=None, foreground=WHITE)
-        moveLabel5 = Label(player, font_size=20, background=None, foreground=WHITE)
+        # recommendation prompt
+        match copilotRecommendation:
+            case 'monastery':
+                #prompt = 'It\'s generally a good strategy to always place a meeple on a Monastery!'
+                promptLine1 = 'It\'s generally a good strategy'
+                promptLine2 = 'to always place a meeple'
+                promptLine3 = 'on a Monastery!'
+            case 'save meeple':
+                #prompt = 'It might be worth hanging onto a meeple in case you draw a Monastery'
+                promptLine1 = 'It might be worth hanging onto '
+                promptLine2 = 'a meeple in case you draw a '
+                promptLine3 = 'Monastery.'
+            case 'farmer':
+                #prompt = 'Now would be a good time to place a farmer.'
+                promptLine1 = 'Now would be a good time to place'
+                promptLine2 = 'a farmer.'
+            case 'city':
+                #prompt = 'You should place a meeple in a city.'
+                promptLine1 = 'You should place a meeple in a city.'
+        
 
-        # self.meepleLabel.blit(meepleInfoLabel.text_surface, (x,y))
+        moveLabel0 = Label(title, font_size=30, background=WHITE)
+        moveLabel1 = Label(promptLine1, font_size=25, background=None, foreground=WHITE)
+        moveLabel2 = Label(promptLine2, font_size=25, background=None, foreground=WHITE)
+        moveLabel3 = Label(promptLine3, font_size=25, background=None, foreground=WHITE)
+        #moveLabel4 = Label(promptLine4, font_size=25, background=None, foreground=WHITE)
 
-        self.moveLabel.blit(moveLabel1.text_surface, (15, 10))
-        self.moveLabel.blit(moveLabel2.text_surface, (15, 35))
-        self.moveLabel.blit(moveLabel3.text_surface, (15, 55))
-        self.moveLabel.blit(moveLabel4.text_surface, (15, 75))
-        self.moveLabel.blit(moveLabel5.text_surface, (15, 95))
+        self.moveLabel.blit(moveLabel0.text_surface, (15, 10))
+        self.moveLabel.blit(moveLabel1.text_surface, (15, 35))
+        self.moveLabel.blit(moveLabel2.text_surface, (15, 55))
+        self.moveLabel.blit(moveLabel3.text_surface, (15, 75))
+        #self.moveLabel.blit(moveLabel4.text_surface, (15, 95))

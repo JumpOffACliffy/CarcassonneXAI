@@ -145,7 +145,6 @@ def PlayGame(p1, p2):
     background.blit(title, (40, 7))
     Carcassonne = CarcassonneState(p1, p2)
     NT = nextTile(Carcassonne, DisplayScreen)
-    NT.moveLabel = pygame.Surface((DisplayScreen.Window_Width, 50))
     done = False
     player = Carcassonne.p1
     isGameOver = False
@@ -160,7 +159,7 @@ def PlayGame(p1, p2):
 
     copilot = Copilot()
 
-    testFlag = True
+    copilotFlag = True
 
     while not done:
         for event in pygame.event.get():
@@ -179,12 +178,11 @@ def PlayGame(p1, p2):
                             ManualMove=None,
                         )
                         NT = nextTile(Carcassonne, DisplayScreen)
-                        NT.moveLabel = pygame.Surface((DisplayScreen.Window_Width, 50))
                         isStartOfTurn = True
                         hasSomethingNew = True
                         isStartOfGame = False
-                        #new flag here?
-                        testFlag = True
+                        #new flag here
+                        copilotFlag = True
                         isGameOver = Carcassonne.isGameOver
                         if isGameOver:
                             pygame.time.set_timer(AI_MOVE_EVENT, 0)
@@ -206,7 +204,8 @@ def PlayGame(p1, p2):
                                 NT.Meeple = None
                             hasSomethingNew = True
                             #copilot monastery meeple saving function
-                            copilot.saveMeepleForMonastery(Carcassonne, NT.nextTileIndex)
+                            if copilotFlag and copilot.saveMeepleForMonastery(Carcassonne, NT.nextTileIndex):
+                                NT.updateMoveLabel(Carcassonne, 'save meeple')
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         X, Y = NT.evaluate_click(pygame.mouse.get_pos(), DisplayScreen)
 
@@ -222,10 +221,6 @@ def PlayGame(p1, p2):
                                 ManualMove,
                             )
                             NT = nextTile(Carcassonne, DisplayScreen)
-                            NT.moveLabel = pygame.Surface(
-                                (DisplayScreen.Window_Width, 50)
-                            )
-                            isStartOfTurn = True
                             hasSomethingNew = True
                             isStartOfGame = False
                             pygame.time.set_timer(AI_MOVE_EVENT, 1)
@@ -263,8 +258,6 @@ def PlayGame(p1, p2):
                     NT.resetImage()
                     NT.pressSpaceInstruction()
 
-        if isStartOfTurn:
-            NT.updateMoveLabel(Carcassonne, selectedMove, isStartOfGame)
 
         printScores(Carcassonne, DisplayScreen)
         printTilesLeft(Carcassonne, DisplayScreen)
@@ -280,9 +273,12 @@ def PlayGame(p1, p2):
         diplayGameBoard(Carcassonne, DisplayScreen)
         pygame.display.flip()
 
-        if testFlag == True:
-            copilot.placeMonasteryMeeple(Carcassonne)
-            testFlag = False
+        if isStartOfTurn:
+            copilotRecommendation = copilot.placeMeeple(Carcassonne)
+            isStartOfTurn = False
+            if copilotRecommendation is not None:
+                NT.updateMoveLabel(Carcassonne, copilotRecommendation)
+                copilotFlag = False
 
         isStartOfTurn = False
         hasSomethingNew = False
@@ -291,8 +287,8 @@ def PlayGame(p1, p2):
 
         if isGameOver:
             if 'logger' in globals():
-                logger.info(f'Winner - Player: {Carcassonne.winner}')
-                logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}')
+                logger.info(f'Winner - Player: {Carcassonne.winner}') # type: ignore
+                logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}') # type: ignore
             print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
             FinalMenu(Carcassonne)
 

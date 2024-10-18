@@ -186,18 +186,35 @@ class  CarcassonneState:
             self.move([16, 0, 0, 0, None])
             
             # code for running tests by arranging the order of the first few tiles
-            
-            index = self.deck.index(20)
+            """
+            index = self.deck.index(15)
             self.deck[index] = self.deck[12]
-            self.deck[12] = 20
+            self.deck[12] = 15
+            """
+            
+            #player
+            index = self.deck.index(20)
+            self.deck[index] = self.deck[0]
+            self.deck[0] = 20
+            #ai
+            index = self.deck.index(22)
+            self.deck[index] = self.deck[1]
+            self.deck[1] = 22
+            #player
+            index = self.deck.index(11)
+            self.deck[index] = self.deck[2]
+            self.deck[2] = 11
+
+            #player
+            index = self.deck.index(15)
+            self.deck[index] = self.deck[12]
+            self.deck[12] = 15
+            #ai
+
             """
             index = self.deck.index(0)
             self.deck[index] = self.deck[1]
             self.deck[1] = 0
-            
-            index = self.deck.index(20)
-            self.deck[index] = self.deck[2]
-            self.deck[2] = 20
             """
             
             

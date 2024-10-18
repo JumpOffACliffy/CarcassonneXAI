@@ -19,7 +19,7 @@ class MCTSPlayer(Player):
         c_param=1,
         logs=False,
         logfile="",
-        name="MCTS_V",
+        name="AI",
         rollouts=1,
     ):
         super().__init__()
@@ -102,6 +102,9 @@ class MCTSPlayer(Player):
             move_list = sorted(root_node.child, key=lambda c: c.Q, reverse=True) # returns Q values high to low         
         else:
             move_list = sorted(root_node.child, key=lambda c: c.Q) # returns Q values low to high
+
+        for move in move_list:
+            print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
 
         self.latest_root_node = root_node
         return move_list
