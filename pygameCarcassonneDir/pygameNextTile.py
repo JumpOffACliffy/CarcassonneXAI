@@ -346,37 +346,40 @@ class nextTile:
         self.meepleLabel.blit(meepleInfoLabel.text_surface, (x, y))
 
 
-    def updateMoveLabel(self, displayScreen, copilotRecommendation):
+    def updateMoveLabel(self, copilotActive, copilotRecommendation):
         title = "Copilot Suggestion:"
 
         promptLine1 = ''
         promptLine2 = ''
         promptLine3 = ''
 
-        # recommendation prompt
-        match copilotRecommendation:
-            case 'thinking':
-                promptLine1 = 'Thinking...'
-            case 'monastery':
-                #prompt = 'It\'s generally a good strategy to always place a meeple on a Monastery!'
-                promptLine1 = 'It\'s generally a good strategy'
-                promptLine2 = 'to always place a meeple'
-                promptLine3 = 'on a Monastery!'
-            case 'save meeple':
-                #prompt = 'It might be worth hanging onto a meeple in case you draw a Monastery'
-                promptLine1 = 'It might be worth hanging onto '
-                promptLine2 = 'a meeple in case you draw a '
-                promptLine3 = 'Monastery.'
-            case 'farmer':
-                #prompt = 'Now would be a good time to place a farmer.'
-                promptLine1 = 'Now would be a good time to place'
-                promptLine2 = 'a farmer.'
-            case 'city':
-                #prompt = 'You should place a meeple in a city.'
-                promptLine1 = 'You should place a meeple in a'
-                promptLine2 = 'city.'
-            case 'none':
-                promptLine1 = 'No suggestion.'
+        if copilotActive:
+            # recommendation prompt
+            match copilotRecommendation:
+                case 'thinking':
+                    promptLine1 = 'Thinking...'
+                case 'monastery':
+                    #prompt = 'It\'s generally a good strategy to always place a meeple on a Monastery!'
+                    promptLine1 = 'It\'s generally a good strategy'
+                    promptLine2 = 'to always place a meeple'
+                    promptLine3 = 'on a Monastery!'
+                case 'save meeple':
+                    #prompt = 'It might be worth hanging onto a meeple in case you draw a Monastery'
+                    promptLine1 = 'It might be worth hanging onto '
+                    promptLine2 = 'a meeple in case you draw a '
+                    promptLine3 = 'Monastery.'
+                case 'farmer':
+                    #prompt = 'Now would be a good time to place a farmer.'
+                    promptLine1 = 'Now would be a good time to place'
+                    promptLine2 = 'a farmer.'
+                case 'city':
+                    #prompt = 'You should place a meeple in a city.'
+                    promptLine1 = 'You should place a meeple in a'
+                    promptLine2 = 'city.'
+                case 'none':
+                    promptLine1 = 'No suggestion.'
+        else:
+            title = ""
         
 
         moveLabel0 = Label(title, font_size=30, background=WHITE)

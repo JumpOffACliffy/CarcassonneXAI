@@ -34,8 +34,9 @@ class Copilot:
         #access Q scores with mctsMoves[i].Q
         bestMove = mctsMoves[0].Move
         bestMoveQ = mctsMoves[0].Q
-        print(f"best Q: {bestMoveQ}")
         #print(f"best meeple: {bestMove.MeepleInfo}")
+        print(f"Copilot Best Q: {round(bestMoveQ, 3)}")
+        self.logger.info(bestMoveQ)
 
         if availableMeeples > 0 and bestMove.MeepleInfo is not None and bestMoveQ >= MINIMUM_Q:
             bestMeeple = bestMove.MeepleInfo[0]
