@@ -186,10 +186,10 @@ def PlayGame(p1, p2):
                         #new flag here
                         copilotFlag = True
                         isGameOver = Carcassonne.isGameOver
-                        NT.updateMoveLabel(copilotActive, 'thinking')
                         if isGameOver:
                             pygame.time.set_timer(AI_MOVE_EVENT, 0)
                         else:
+                            NT.updateMoveLabel(copilotActive, 'thinking')
                             pygame.time.wait(AI_DELAY)
                             break
                 else:
@@ -299,7 +299,8 @@ def PlayGame(p1, p2):
 
 if __name__ == "__main__":
     #startMenu()
-    copilotActive = False
+    copilotActive = True
     p1 = HumanPlayer()
-    p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
+    #p1 = MCTSPlayer(isTimeLimited=True, timeLimit=5)
+    p2 = MCTSPlayer(isTimeLimited=False, timeLimit=1)
     PlayGame(p1, p2)

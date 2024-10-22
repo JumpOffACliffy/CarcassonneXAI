@@ -252,11 +252,13 @@ def playMove(NextTile, player, Carcassonne, TileIndex, isStartOfGame = False, Ma
         selectedMove = player.chooseAction(Carcassonne)
     else:
         selectedMove = ManualMove
+        logging.info(f"Move played: {selectedMove}")
+
     
     # log move
-    print(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
-    #logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
-    #logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
+    # print(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
+    # logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    # logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
 
     # play move on board
     Carcassonne.move(selectedMove)

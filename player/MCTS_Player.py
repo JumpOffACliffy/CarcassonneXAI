@@ -5,6 +5,7 @@ import time
 import random
 import numpy as np
 
+from pygameCarcassonneDir.pygameFunctions import get_logger
 
 class MCTSPlayer(Player):
 
@@ -42,6 +43,9 @@ class MCTSPlayer(Player):
         self.latest_root_node = None  # added
         self.nodes_dict = {}  # added
         self.id_count = 0  # added
+
+        self.logger = get_logger()
+
         if self.logs:
             self.cols = ["Name", "Simulations", "Turn", "TimeTaken"]
             self.file = self.CreateFile(self.cols, "Stats")
@@ -103,8 +107,8 @@ class MCTSPlayer(Player):
         else:
             move_list = sorted(root_node.child, key=lambda c: c.Q) # returns Q values low to high
 
-        #for move in move_list:
-            #print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
+        # for move in move_list:
+        #     print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
 
         self.latest_root_node = root_node
         return move_list
@@ -130,10 +134,16 @@ class MCTSPlayer(Player):
 
         # return the node with the highest number of wins from the view of the current player
         if playerSymbol == 1:
+            moveQ = sorted(root_node.child, key=lambda c: c.Q)[-1].Q
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[-1].Move
+            self.logger.info(moveQ)
         else:
+            moveQ = sorted(root_node.child, key=lambda c: c.Q)[0].Q
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[0].Move
-
+        
+        # for move in sorted(root_node.child, key=lambda c: c.Q):
+        #     print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
+        # print(f"Player: {playerSymbol}, Move: {bestMove.move}")
         self.latest_root_node = root_node
         return bestMove.move
 

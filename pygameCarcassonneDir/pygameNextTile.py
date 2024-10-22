@@ -376,8 +376,17 @@ class nextTile:
                     #prompt = 'You should place a meeple in a city.'
                     promptLine1 = 'You should place a meeple in a'
                     promptLine2 = 'city.'
+                case 'road':
+                    #prompt = 'You should claim a road.'
+                    promptLine1 = 'You should claim a road.'
+                case 'no meeples left':
+                    #prompt = 'You have no meeples remaining.'
+                    promptLine1 = 'You have no meeples remaining.'
                 case 'none':
                     promptLine1 = 'No suggestion.'
+                    # "play whatever move you want"
+                    # hang onto your meeples
+                    # waiting for a better opportunity to play a meeple...
         else:
             title = ""
         
