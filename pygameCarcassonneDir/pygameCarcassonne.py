@@ -187,7 +187,8 @@ def PlayGame(p1, p2):
                         #new flag here
                         copilotFlag = True
                         isGameOver = Carcassonne.isGameOver
-                        NT.updateMoveLabel(copilotActive, 'thinking')
+                        if copilotActive:
+                            NT.updateMoveLabel(copilotActive, 'thinking')
                         if isGameOver:
                             pygame.time.set_timer(AI_MOVE_EVENT, 0)
                         else:
@@ -289,17 +290,16 @@ def PlayGame(p1, p2):
 
         CLOCK.tick(60)
 
-        if isGameOver: #only run the logger if the copilot is active
-            # logger.info(f'Winner - Player: {Carcassonne.winner}') # type: ignore
-            # logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}') # type: ignore
+        if isGameOver: 
+            if 'logger' in globals():
+                logger.info(f'Winner - Player: {Carcassonne.winner}') # type: ignore
+                logger.info(f'Scores - Player 1: {Carcassonne.Scores[0]}, Player 2: {Carcassonne.Scores[1]}') # type: ignore
             print(f"Winner: Player {Carcassonne.winner}, Scores:  P1: {Carcassonne.Scores[0]} - P2: {Carcassonne.Scores[1]}")
             FinalMenu(Carcassonne)
 
 
 if __name__ == "__main__":
-    #startMenu()
     copilotActive = True
     p1 = HumanPlayer()
-    #p1 = MCTSPlayer(isTimeLimited=True, timeLimit=5)
     p2 = MCTSPlayer(isTimeLimited=True, timeLimit=1)
     PlayGame(p1, p2)

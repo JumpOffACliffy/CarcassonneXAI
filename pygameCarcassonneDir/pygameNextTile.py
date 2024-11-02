@@ -109,8 +109,6 @@ class nextTile:
             self.moveLabel.set_alpha(180)
             pygame.draw.rect(self.moveLabel, BROWN, self.moveLabel.get_rect(), 10)
 
-            # self.moveLabel1 = Label('Copilot is thinking...', font_size=25, background=None, foreground=WHITE)
-
             # rotation images and labels
             self.leftRotImage = pygame.image.load("pygame_images/left_rotate.png")
             self.rightRotImage = pygame.image.load("pygame_images/right_rotate.png")
