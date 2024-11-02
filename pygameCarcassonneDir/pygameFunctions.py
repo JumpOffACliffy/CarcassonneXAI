@@ -7,6 +7,27 @@ from pygameCarcassonneDir.pygameLabel import Label
 import pygame
 import math
 
+import logging
+from datetime import datetime
+
+def setup_logging():
+    
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
+    """Setup the logging configuration with a unique file for each game run."""
+    log_filename = f'logs/game_moves_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
+    logging.basicConfig(
+        filename=log_filename,   # Each log file gets a unique name
+        level=logging.INFO,
+        format='%(message)s',
+        filemode='w'
+    )
+    #return logging.getLogger()
+
+def get_logger():
+    return logging.getLogger()
+
 X_DEPTH = 10
 Y_DEPTH = 20
 WIDTH = HEIGHT = 104  # image scaled x2
@@ -231,11 +252,17 @@ def playMove(NextTile, player, Carcassonne, TileIndex, isStartOfGame = False, Ma
         selectedMove = player.chooseAction(Carcassonne)
     else:
         selectedMove = ManualMove
+        logging.info(f"Move played: {selectedMove}")
+
     
+    # log move
+    # print(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
+    # logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Meeple: {selectedMove[4]}')
+    # logging.info(f'Turn: {Carcassonne.Turn}, Player: {Carcassonne.playerSymbol}, Move: {selectedMove}')
+
     # play move on board
-    #print(f'(pygame) Selected Move: {selectedMove}')
-    #print(f'(pygame) Selected Move[0]: {selectedMove[0]}')
     Carcassonne.move(selectedMove)
+
     # switch player
     if player == Carcassonne.p1:
         return Carcassonne.p2, selectedMove
@@ -267,7 +294,7 @@ def printTilesLeft(Carcassonne, displayScreen, *args):
     # attach to rectangle
     label.blit(tilesLeftLabel.text_surface, ((width - text_width)/2, (height - text_height)/2))
     # attach rectangle to screen
-    GAME_DISPLAY.blit(label, (Grid_Window_Width + (Menu_Width - width)/2, 0))
+    GAME_DISPLAY.blit(label, (Grid_Window_Width + (Menu_Width - width)/2, 250))
     
     
 

@@ -5,6 +5,7 @@ import time
 import random
 import numpy as np
 
+from pygameCarcassonneDir.pygameFunctions import get_logger
 
 class MCTSPlayer(Player):
 
@@ -18,8 +19,8 @@ class MCTSPlayer(Player):
         isTimeLimited=False,
         c_param=1,
         logs=False,
-        logfile=None,
-        name="MCTS_V",
+        logfile="",
+        name="AI",
         rollouts=1,
     ):
         super().__init__()
@@ -42,20 +43,12 @@ class MCTSPlayer(Player):
         self.latest_root_node = None  # added
         self.nodes_dict = {}  # added
         self.id_count = 0  # added
+
+        self.logger = get_logger()
+
         if self.logs:
             self.cols = ["Name", "Simulations", "Turn", "TimeTaken"]
             self.file = self.CreateFile(self.cols, "Stats")
-
-            self.metric_cols = [
-                "Iteration",
-                "Backpropagation_depth",
-                "Reward",
-                "Discrepancy",
-                "UN_Visits",
-                "UN_Reward",
-                "",
-            ]
-            self.metric_file = self.CreateFile(self.cols, "Metrics")
 
     def test_seed(self):
         print(random.randint(0, 99999))
@@ -81,6 +74,45 @@ class MCTSPlayer(Player):
             state, self.iterations, self.timeLimit, self.isTimeLimited
         )
 
+    def listActions(self, state):
+        """
+        List actions using UCT function
+        """
+        return self.MCTS_Search_List(
+            state, self.iterations, self.timeLimit, self.isTimeLimited
+        )
+
+    def MCTS_Search_List(self, root_state, iterations, timeLimit, isTimeLimited):
+        """
+        Same as the MCTS_Search function but returns the list of all available moves on a turn.
+        Designed so it can be called even when it is not the AI player's turn. 
+        MCTS_Search only gets called on an AI player turn. 
+        """
+        # Player 1 = 1, Player 2 = 2 (Player 2 wants to the game to be a loss)
+        playerSymbol = root_state.playerSymbol
+        self.latest_root_node = None  # added
+
+        # state the Root Node
+        root_node = Node(state=root_state)
+        self.nodes_dict = {0: root_node}  # added
+        self.id_count = 0  # added
+        if self.isTimeLimited:
+            self.MCTS_TimeLimit(root_node, root_state)
+        else:
+            self.MCTS_IterationLimit(root_node, root_state)
+
+        # return the node with the highest number of wins from the view of the current player
+        if playerSymbol == 1:
+            move_list = sorted(root_node.child, key=lambda c: c.Q, reverse=True) # returns Q values high to low         
+        else:
+            move_list = sorted(root_node.child, key=lambda c: c.Q) # returns Q values low to high
+
+        # for move in move_list:
+        #     print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
+
+        self.latest_root_node = root_node
+        return move_list
+
     def MCTS_Search(self, root_state, iterations, timeLimit, isTimeLimited):
         """
         Conduct a UCT search for itermax iterations starting from rootstate.
@@ -102,11 +134,16 @@ class MCTSPlayer(Player):
 
         # return the node with the highest number of wins from the view of the current player
         if playerSymbol == 1:
+            moveQ = sorted(root_node.child, key=lambda c: c.Q)[-1].Q
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[-1].Move
+            self.logger.info(moveQ)
         else:
-            print(sorted(root_node.child, key=lambda c: c.Q)[0])
+            moveQ = sorted(root_node.child, key=lambda c: c.Q)[0].Q
             bestMove = sorted(root_node.child, key=lambda c: c.Q)[0].Move
-
+        
+        # for move in sorted(root_node.child, key=lambda c: c.Q):
+        #     print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
+        # print(f"Player: {playerSymbol}, Move: {bestMove.move}")
         self.latest_root_node = root_node
         return bestMove.move
 
@@ -183,9 +220,7 @@ class MCTSPlayer(Player):
             self.Backpropogate(node, reward)
 
             endTime = time.time()
-        print(
-            f"({self.name})   Time Taken: {round(endTime - startTime, 2)} secs  -  Turn: {root_state.Turn}"
-        )
+        #print(f"({self.name})   Time Taken: {round(endTime - startTime, 2)} secs  -  Turn: {root_state.Turn}")
 
     def MCTS_IterationLimit(self, root_node, root_state):
         startTime = time.time()
@@ -208,11 +243,9 @@ class MCTSPlayer(Player):
             self.Backpropogate(node, reward)
 
         endTime = time.time()
-        print(
-            f"({self.name})   TimeTaken: {round(endTime - startTime,3)} secs  -  Turn: {root_state.Turn}"
-        )
+        #print(f"({self.name})   TimeTaken: {round(endTime - startTime,3)} secs  -  Turn: {root_state.Turn}")
         # append info to csv
-        if self.logs:  # ADD TREE STRUCTURE LOGS
+        if self.logs:  
             data = {
                 "Name": self.name,
                 "Simulations": self.iterations,
@@ -254,7 +287,7 @@ class Node:
         visits = 1 if self.visits == 0 else self.visits
         move = self.Move
         if self.Move:
-            print("\nMCTS best:")
+            #print("\nMCTS best:")
             tile_type = str(TILE_DESC_DICT[move.move[0]])
         else:
             tile_type = str(None)

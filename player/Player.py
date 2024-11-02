@@ -104,7 +104,7 @@ class Player:
             new_df = pd.concat([df,pd.DataFrame(data)])  # new data
             #df.to_csv(self.file, index=False)  # export
             new_df.to_csv(self.file, index=False)  # export
-        
+
     def UpdateESFile(self, data):
         """
         Update EvoAlg csv file with data
@@ -116,7 +116,6 @@ class Player:
             new_df = pd.concat([df,pd.DataFrame(data)])  # new data
             #df.to_csv(self.ES_file, index=False)  # export
             new_df.to_csv(self.ES_file, index=False)  # export
-    
     
     def UpdateEVOFile(self, data):
         """
@@ -197,8 +196,8 @@ class RandomPlayer(Player):
         """
         Make a random move from all possible actions
         """
-        if (state.Turn % 10 == 0):
-            print(f'({self.name})   TimeTaken: 0 secs  -  Turn: {state.Turn}  -  Time:{time.strftime("%H:%M:%S", time.localtime())}')
+        #if (state.Turn % 10 == 0):
+            #print(f'({self.name})   TimeTaken: 0 secs  -  Turn: {state.Turn}  -  Time:{time.strftime("%H:%M:%S", time.localtime())}')
         
         return state.getRandomMove().move
     

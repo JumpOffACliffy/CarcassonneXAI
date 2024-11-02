@@ -8,7 +8,6 @@ from Carcassonne_Game.Carcassonne_CityUtils import cityConnections, cityClosures
 from Carcassonne_Game.Carcassonne_RoadUtils import roadConnections, roadClosures
 from Carcassonne_Game.Carcassonne_FarmUtils import farmConnections
 
-
 """
 
 In this script you will find the class for the game states of Carcassonne.
@@ -60,7 +59,7 @@ SIDE_COMPARISON_DICT={
 
 
             
-class CarcassonneState:
+class  CarcassonneState:
     """
     List of important attributes:
         self.p1 - player 1 (class 'Player')
@@ -187,18 +186,24 @@ class CarcassonneState:
             self.move([16, 0, 0, 0, None])
             
             # code for running tests by arranging the order of the first few tiles
-            """
-            index = self.deck.index(0)
-            self.deck[index] = self.deck[0]
-            self.deck[0] = 0
-            
-            index = self.deck.index(0)
-            self.deck[index] = self.deck[1]
-            self.deck[1] = 0
-            
+            """            
+            #player
             index = self.deck.index(20)
+            self.deck[index] = self.deck[0]
+            self.deck[0] = 20
+            #ai
+            index = self.deck.index(22)
+            self.deck[index] = self.deck[1]
+            self.deck[1] = 22
+            #player
+            index = self.deck.index(11)
             self.deck[index] = self.deck[2]
-            self.deck[2] = 20
+            self.deck[2] = 11
+
+            #player
+            index = self.deck.index(15)
+            self.deck[index] = self.deck[12]
+            self.deck[12] = 15
             """
             
             
@@ -439,6 +444,7 @@ class CarcassonneState:
                 - Rotation: Rotation of tile
                 - MeepleKey
         """
+
         # split up 'Move' object
         PlayingTileIndex = Move[0]
         X,Y = Move[1], Move[2]
@@ -499,6 +505,8 @@ class CarcassonneState:
         self.UpdateVirtualScores()
         # check if game is over
         if self.TotalTiles == 0:
+            self.playerSymbol = 3 - self.playerSymbol
+            self.Turn += 1
             self.EndGameRoutine()
             return
         
