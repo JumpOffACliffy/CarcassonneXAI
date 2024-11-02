@@ -23,7 +23,7 @@ def setup_logging():
         format='%(message)s',
         filemode='w'
     )
-    return logging.getLogger()
+    #return logging.getLogger()
 
 def get_logger():
     return logging.getLogger()

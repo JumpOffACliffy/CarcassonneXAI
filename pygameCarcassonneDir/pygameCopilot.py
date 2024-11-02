@@ -1,6 +1,3 @@
-# receive the list of moves
-# create logic to return appropriate copilot suggestion
-
 from pygameCarcassonneDir.pygameFunctions import get_logger
 
 class Copilot:
@@ -38,7 +35,7 @@ class Copilot:
         bestMeeple = bestMove.MeepleInfo[0] if bestMove.MeepleInfo else None  # sets bestMeeple to the best move's meeple, or None
 
         for move in mctsMoves:
-            print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
+        #     print(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
             self.logger.info(f"Move: {move.Move}, Q: {round(move.Q, 3)}")
 
         # Find the next best move that does not involve placing a meeple
@@ -56,7 +53,7 @@ class Copilot:
         Q_DIFFERENCE_THRESHOLD = 2.0  # Define a minimum difference to trigger a recommendation
 
         # Dynamic adjustment based on current game state
-        targetRecommendations = 7
+        targetRecommendations = 10
         totalTurns = 35  # Assuming each player plays 35 turns
         turnsPassed = (Carcassonne.Turn // 2)  # Convert to individual player turns
 
@@ -97,8 +94,6 @@ class Copilot:
         print(f"Q ratio: {Q_ratio}")
         print(f"Q difference: {Q_difference}")
         
-        # self.logger.info(bestMoveQ)
-
         self.logger.info(f'Copilot Best Q: {round(bestMoveQ, 3)}')
         self.logger.info(f'Best No Meeple Q: {round(bestNoMeepleMoveQ, 3)}')
         self.logger.info(f"Q ratio: {Q_ratio}")
